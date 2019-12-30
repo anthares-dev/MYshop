@@ -12,7 +12,7 @@ import CMS from "./views/CMS";
 //import NavBar from "./components/NavBar"
 
 /*----- STYLE/MATERIAL UI -----*/
-//import "./App.css";
+import "./App.css";
 
 /*----- RESOURCES -----*/
 //https://medium.com/@AkyunaAkish/understanding-react-router-4-df73a66d96c4
@@ -20,16 +20,21 @@ import CMS from "./views/CMS";
 function App() {
   return (
     <React.Fragment>
-      <TopBar />
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route path="/:product_id" component={Product} />
+      <div className="App">
+        <TopBar />
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Landing} />
+
+            {/*          <Route path="/:product_id" component={Product} />
           <Route path="/cart" component={Cart} />
           <Route path="/cart/checkout/:product_id" component={Checkout} />
           <Route path="/CMS" component={CMS} />
-        </Switch>
-      </BrowserRouter>
+          
+          */}
+          </Switch>
+        </BrowserRouter>
+      </div>
     </React.Fragment>
   );
 }

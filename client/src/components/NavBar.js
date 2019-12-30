@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 export default function LabelBottomNavigation() {
   const classes = useStyles();
-  const [value, setValue] = React.useState("recents");
+  const [value, setValue] = React.useState("home");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -38,6 +38,7 @@ export default function LabelBottomNavigation() {
       className={classes.root}
     >
       <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
+
       <BottomNavigationAction
         label="Search"
         value="search"

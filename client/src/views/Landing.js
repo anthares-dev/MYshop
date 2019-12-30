@@ -23,13 +23,7 @@ export default function Landing() {
             overflow: "auto"
           }}
         >
-          <Box mb={2}>
-            <ProductCard />
-          </Box>
-          <Box mb={2}>
-            <ProductCard />
-          </Box>
-          <Box mb={2}>
+          <Box my={1}>
             <ProductCard />
           </Box>
         </Typography>
