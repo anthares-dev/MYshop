@@ -1,0 +1,23 @@
+{
+  "name": "myshop",
+  "version": "1.0.0",
+  "description": "my react app for e-commerce",
+  "main": "server.js",
+  "dependencies": {
+    "concurrently": "^5.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.3",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Fulvio Vigilante <fulvio.vigilante@gmail.com>",
+  "license": "ISC"
+}
