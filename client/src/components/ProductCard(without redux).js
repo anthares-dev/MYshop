@@ -1,5 +1,6 @@
 /*----- REACT/DEPENDECIES -----*/
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 /*----- STYLE/MATERIAL UI -----*/
 import { makeStyles } from "@material-ui/core/styles";
@@ -38,8 +39,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ProductCard({ loading, products, error }) {
+export default function ProductCard() {
   const classes = useStyles();
+  const axios = require("axios");
+
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    axios
+      .get("http://localhost:5000/products/")
+      .then(res => {
+        setLoading(false);
+        console.log("fetched data:", res.data);
+        if (res.data) {
+          setProducts(res.data);
+        } else {
+          setProducts([]);
+        }
+      })
+      .catch(err => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
 
   if (loading)
     return (
@@ -50,7 +77,6 @@ export default function ProductCard({ loading, products, error }) {
         </Typography>
       </div>
     );
-
   if (error) return <div>{error}</div>;
 
   return (

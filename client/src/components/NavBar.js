@@ -1,5 +1,7 @@
 /*----- REACT/DEPENDECIES -----*/
 import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 /*----- VIEWS/COMPONENTS -----*/
 
@@ -25,9 +27,13 @@ const useStyles = makeStyles({
 
 export default function LabelBottomNavigation() {
   const classes = useStyles();
-  const [value, setValue] = React.useState("home");
+  const history = useHistory();
+  const [value, setValue] = React.useState("");
+
+  const user = useSelector(state => state.user.user[0]);
 
   const handleChange = (event, newValue) => {
+    //history.push(`/${newValue}/${user._id}`);
     setValue(newValue);
   };
 
@@ -37,7 +43,13 @@ export default function LabelBottomNavigation() {
       onChange={handleChange}
       className={classes.root}
     >
-      <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
+      <BottomNavigationAction
+        label="Home"
+        value=""
+        icon={<HomeIcon />}
+        component={Link}
+        to="/"
+      />
 
       <BottomNavigationAction
         label="Search"
@@ -45,14 +57,18 @@ export default function LabelBottomNavigation() {
         icon={<SearchIcon />}
       />
       <BottomNavigationAction
-        label="Favorites"
-        value="favorites"
+        label="Wishlist"
+        value="wish"
         icon={<FavoriteIcon />}
+        component={Link}
+        to={user ? `/wishlist/${user._id}` : "/wishlist"}
       />
       <BottomNavigationAction
         label="Cart"
         value="cart"
         icon={<ShoppingCartIcon />}
+        component={Link}
+        to={user ? `/cart/${user._id}` : "/cart"}
       />
       <BottomNavigationAction
         label="Account"
