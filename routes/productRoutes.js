@@ -3,6 +3,8 @@ const router = express.Router();
 const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 
+//https://codeburst.io/writing-a-crud-app-with-node-js-and-mongodb-e0827cbbdafb
+
 /*test*/
 router.get("/test", (req, res) => {
   res.send({ msg: "Products test route." });
@@ -18,14 +20,14 @@ router.get("/", (req, res) => {
     .catch(err => console.log(err));
 });
 
-//! post a product */
-router.post("/", (req, res) => {
-  const { name, description, image, price, category, rate } = req.body;
+//! Create a product */
+router.post("/create", (req, res) => {
+  const { title, description, images, price, category, rate } = req.body;
 
   const newProduct = new productModel({
-    name,
+    title,
     description,
-    image,
+    images,
     price,
     category,
     rate
@@ -33,10 +35,32 @@ router.post("/", (req, res) => {
 
   newProduct
     .save()
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => console.log(err));
+    .then(res.send("Product created successfully."))
+    .catch(err => res.send(err).json({ success: false }));
+});
+
+//! Read a product */
+router.get("/:product_id/read", (req, res) => {
+  productModel
+    .findById(req.params.product_id)
+    .then(data => res.json(data))
+    .catch(err => res.status(err).json({ success: false }));
+});
+
+//! Update a product */
+router.put("/:product_id/update", (req, res) => {
+  productModel
+    .findByIdAndUpdate(req.params.product_id, { $set: req.body })
+    .then(res.json("Product udpated."))
+    .catch(err => res.status(err).json({ success: false }));
+});
+
+//! Delete a product */
+router.delete("/:product_id/delete", (req, res) => {
+  productModel
+    .findByIdAndRemove(req.params.product_id)
+    .then(res.json("Product deleted."))
+    .catch(err => res.status(err).json({ success: false }));
 });
 
 //! post a product_id in the wishlist */

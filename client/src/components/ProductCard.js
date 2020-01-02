@@ -19,6 +19,7 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
+import ImageGallery from "react-image-gallery";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -59,14 +60,17 @@ export default function ProductCard({ loading, products, error }) {
         <Box mb={2} key={i}>
           <Card className={classes.card}>
             <CardActionArea>
-              <CardMedia
+              <ImageGallery items={product.images} className={classes.media} />
+
+              {/*<CardMedia
                 className={classes.media}
                 image={product.image}
                 title={product.name}
-              />
+              />*/}
+
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {product.name}
+                  {product.title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
                   {product.description}

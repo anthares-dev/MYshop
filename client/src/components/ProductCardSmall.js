@@ -30,16 +30,19 @@ const useStyles = makeStyles(theme => ({
   card: {
     display: "flex"
   },
+  cover: {
+    width: 140,
+    height: 140
+  },
   details: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    height: 140
   },
   content: {
-    flex: "1"
+    flex: "1 0 auto"
   },
-  cover: {
-    width: 140
-  },
+
   controls: {
     display: "flex",
     justifyContent: "space-between",
@@ -52,7 +55,25 @@ export default function ProductCardSmall({ loading, products, error }) {
   const classes = useStyles();
   const theme = useTheme();
 
-  console.log(products);
+  if (loading)
+    return (
+      <div>
+        <Box mb={2}>
+          <Skeleton variant="rect" height={140} animation="wave" />
+        </Box>
+        <Box mb={2}>
+          <Skeleton variant="rect" height={140} animation="wave" />
+        </Box>
+        <Box mb={2}>
+          <Skeleton variant="rect" height={140} animation="wave" />
+        </Box>
+        <Typography gutterBottom variant="h5" component="h2">
+          Loading...
+        </Typography>
+      </div>
+    );
+
+  if (error) return <div>{error}</div>;
 
   return (
     <React.Fragment>
@@ -67,12 +88,12 @@ export default function ProductCardSmall({ loading, products, error }) {
 
             <div className={classes.details}>
               <CardContent className={classes.content}>
-                <Typography component="h5" variant="h5">
+                <Typography component="h5" variant="h6">
                   {product.name}
                 </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
+                {/*<Typography variant="subtitle1" color="textSecondary">
                   {product.description}
-                </Typography>
+                </Typography> */}
               </CardContent>
 
               <div className={classes.controls}>
