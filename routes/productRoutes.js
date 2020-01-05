@@ -10,7 +10,7 @@ router.get("/test", (req, res) => {
   res.send({ msg: "Products test route." });
 });
 
-//! get all products */
+//! Get all products */
 router.get("/", (req, res) => {
   productModel
     .find({})
@@ -63,23 +63,34 @@ router.delete("/:product_id/delete", (req, res) => {
     .catch(err => res.status(err).json({ success: false }));
 });
 
-//! post a product_id in the wishlist */
+//! add a product_id in the wishlist */
 router.post("/wishlist/:product_id", (req, res) => {
   userModel
     .findOneAndUpdate(
-      { _id: "5e0b35b81c9d44000064a11b" },
+      { _id: "5e1205a01c9d440000ebf432" },
       { $push: { wishlist: req.params.product_id } }
     )
     .then(data => res.json(data))
     .catch(err => res.status(err).json({ success: false }));
 });
 
-//! post a product_id in the productlist */
+//! add a unique product_id in the user productlist */
 router.post("/cart/:product_id", (req, res) => {
   userModel
     .findOneAndUpdate(
-      { _id: "5e0b35b81c9d44000064a11b" },
+      { _id: "5e1205a01c9d440000ebf432" },
       { $push: { productlist: req.params.product_id } }
+    )
+    .then(data => res.json(data))
+    .catch(err => res.status(err).json({ success: false }));
+});
+
+//! update productlist, deleting a unique product_id in the user productlist */
+router.put("/cart/:product_id/update", (req, res) => {
+  userModel
+    .findOneAndUpdate(
+      { _id: "5e1205a01c9d440000ebf432" },
+      { $pull: { productlist: req.params.product_id } }
     )
     .then(data => res.json(data))
     .catch(err => res.status(err).json({ success: false }));

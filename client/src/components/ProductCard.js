@@ -1,5 +1,10 @@
 /*----- REACT/DEPENDECIES -----*/
 import React, { useState, useEffect } from "react";
+import {
+  addProductCart,
+  delProductCart
+} from "../store/actions/productActions";
+import { connect, useSelector, useDispatch } from "react-redux";
 
 /*----- STYLE/MATERIAL UI -----*/
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,14 +24,17 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import Skeleton from "@material-ui/lab/Skeleton";
-import ImageGallery from "react-image-gallery";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: "auto"
   },
   media: {
-    height: 340
+    height: 300
   },
   actions: {
     display: "flex",
@@ -41,11 +49,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function ProductCard({ loading, products, error }) {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user.user[0]);
   if (loading)
     return (
       <div>
-        <Skeleton variant="rect" height={340} animation="wave" />
+        <Skeleton variant="rect" height={300} animation="wave" />
         <Typography gutterBottom variant="h5" component="h2">
           Loading...
         </Typography>
@@ -54,14 +63,39 @@ export default function ProductCard({ loading, products, error }) {
 
   if (error) return <div>{error}</div>;
 
+  console.log(user);
+
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
+
+  const onClickHandler = () => event => {
+    console.log("inside onchangehandler");
+    let product_id = event.currentTarget.value;
+    console.log(product_id);
+
+    dispatch(addProductCart(product_id));
+  };
+
+  //checked={productlist.includes(product._id) ? true : false}
+
   return (
     <React.Fragment>
       {products.map((product, i) => (
         <Box mb={2} key={i}>
           <Card className={classes.card}>
             <CardActionArea>
-              <ImageGallery items={product.images} className={classes.media} />
-
+              <Slider {...settings}>
+                {product.images.map((image, i) => (
+                  <div key={i}>
+                    <img className={classes.media} src={image} alt={image} />
+                  </div>
+                ))}
+              </Slider>
               {/*<CardMedia
                 className={classes.media}
                 image={product.image}
@@ -94,7 +128,11 @@ export default function ProductCard({ loading, products, error }) {
               <Typography variant="h6" component="p">
                 {product.price} €
               </Typography>
-              <IconButton aria-label="addtocart">
+              <IconButton
+                aria-label="addtocart"
+                onClick={onClickHandler(product._id)}
+                value={product._id}
+              >
                 <AddShoppingCartIcon />
               </IconButton>
             </CardActions>

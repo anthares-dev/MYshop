@@ -1,10 +1,12 @@
 import {
   FETCH_PRODUCTS_PENDING,
   FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_ERROR
+  FETCH_PRODUCTS_ERROR,
+  ADD_PRODUCT_CART,
+  DEL_PRODUCT_CART
 } from "./typesActions";
 
-//! GET PRODUCTS  //-------------------------------------------------------------
+//! GET ALL PRODUCTS  //-------------------------------------------------------------
 
 export function fetchProductsPending() {
   return {
@@ -47,3 +49,35 @@ export function fetchProducts() {
       });
   };
 }
+
+//! HERE ADD other product action for the complete CRUD operations (for the CMS)
+
+//! ADD a product_id in the productlist for the cart //-------------------------------------------------------------
+export const addProductCart = product_id => dispatch => {
+  const axios = require("axios");
+  axios
+    .post(`http://localhost:5000/products/cart/${product_id}`)
+    .then(() => {
+      dispatch({
+        type: ADD_PRODUCT_CART,
+        payload: product_id
+      });
+    })
+    .catch(err => console.log("error:", err));
+};
+
+//! DELETE a product_id in the productlist for the cart //-------------------------------------------------------------
+export const delProductCart = product_id => dispatch => {
+  console.log("inside del product cart action");
+
+  const axios = require("axios");
+  axios
+    .put(`http://localhost:5000/products/cart/${product_id}/update`)
+    .then(() => {
+      dispatch({
+        type: DEL_PRODUCT_CART,
+        payload: product_id
+      });
+    })
+    .catch(err => console.log("error:", err));
+};

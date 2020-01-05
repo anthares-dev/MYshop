@@ -24,7 +24,10 @@ export default function Cart(params) {
 
   const loading = useSelector(state => state.cart.pending);
   const products = useSelector(state => state.cart.cart);
+  //const products = useSelector(state => state.user.user.productlist);
   const error = useSelector(state => state.cart.error);
+
+  console.log(products);
 
   return (
     <React.Fragment>

@@ -1,14 +1,17 @@
 import {
   FETCH_PRODUCTS_PENDING,
   FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_ERROR
+  FETCH_PRODUCTS_ERROR,
+  ADD_PRODUCT_CART,
+  DEL_PRODUCT_CART
 } from "../actions/typesActions";
 
 //* defining the initial state
 const initialState = {
   pending: false,
   products: [],
-  error: null
+  error: null,
+  addedToCart: []
 };
 
 function productReducer(state = initialState, action) {
@@ -33,6 +36,18 @@ function productReducer(state = initialState, action) {
         ...state,
         pending: false,
         error: action.payload
+      };
+    case ADD_PRODUCT_CART:
+      return {
+        ...state,
+        addedToCart: [action.payload, ...state.addedToCart]
+      };
+    case DEL_PRODUCT_CART:
+      return {
+        ...state,
+        addedToCart: state.addedToCart.filter(
+          product_id => product_id !== action.payload
+        )
       };
 
     default:

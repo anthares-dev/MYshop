@@ -1,5 +1,11 @@
 /*----- REACT/DEPENDECIES -----*/
 import React, { useState, useEffect } from "react";
+import {
+  addProductCart,
+  delProductCart
+} from "../store/actions/productActions";
+import { loadUsers } from "../store/actions/userActions";
+import { connect, useSelector, useDispatch } from "react-redux";
 
 /*----- STYLE/MATERIAL UI -----*/
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -31,13 +37,14 @@ const useStyles = makeStyles(theme => ({
     display: "flex"
   },
   cover: {
-    width: 140,
-    height: 140
+    width: 100,
+    height: 100
   },
   details: {
     display: "flex",
     flexDirection: "column",
-    height: 140
+    height: 100,
+    width: 270
   },
   content: {
     flex: "1 0 auto"
@@ -54,18 +61,19 @@ const useStyles = makeStyles(theme => ({
 export default function ProductCardSmall({ loading, products, error }) {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   if (loading)
     return (
       <div>
         <Box mb={2}>
-          <Skeleton variant="rect" height={140} animation="wave" />
+          <Skeleton variant="rect" height={100} animation="wave" />
         </Box>
         <Box mb={2}>
-          <Skeleton variant="rect" height={140} animation="wave" />
+          <Skeleton variant="rect" height={100} animation="wave" />
         </Box>
         <Box mb={2}>
-          <Skeleton variant="rect" height={140} animation="wave" />
+          <Skeleton variant="rect" height={100} animation="wave" />
         </Box>
         <Typography gutterBottom variant="h5" component="h2">
           Loading...
@@ -75,6 +83,24 @@ export default function ProductCardSmall({ loading, products, error }) {
 
   if (error) return <div>{error}</div>;
 
+  //console.log(productlist);
+
+  {
+    /* var count = [];
+  products.forEach(function(i) {
+    count[i] = (count[i] || 0) + 1;
+  });
+  console.log(count);*/
+  }
+  const onClickHandler = () => event => {
+    console.log("inside onchangehandler");
+    let product_id = event.currentTarget.value;
+    console.log(product_id);
+
+    dispatch(delProductCart(product_id));
+    //dispatch(loadUsers());
+    window.location.reload();
+  };
   return (
     <React.Fragment>
       {products.map((product, i) => (
@@ -82,26 +108,29 @@ export default function ProductCardSmall({ loading, products, error }) {
           <Card className={classes.card}>
             <CardMedia
               className={classes.cover}
-              image={product.image}
-              title={product.name}
+              image={product.images[0]}
+              title={product.title}
             />
 
             <div className={classes.details}>
               <CardContent className={classes.content}>
-                <Typography component="h5" variant="h6">
-                  {product.name}
+                <Typography component="h3" variant="subtitle2">
+                  {product.title}
                 </Typography>
-                {/*<Typography variant="subtitle1" color="textSecondary">
-                  {product.description}
-                </Typography> */}
+                {/*                <Typography variant="subtitle1" color="textSecondary">
+                  Quantities: {product.lenght}
+                </Typography>
+                */}
               </CardContent>
 
               <div className={classes.controls}>
                 <Button
-                  variant="contained"
+                  //variant="contained"
                   color="secondary"
                   className={classes.button}
                   startIcon={<DeleteIcon />}
+                  onClick={onClickHandler(product._id)}
+                  value={product._id}
                 >
                   Delete
                 </Button>
